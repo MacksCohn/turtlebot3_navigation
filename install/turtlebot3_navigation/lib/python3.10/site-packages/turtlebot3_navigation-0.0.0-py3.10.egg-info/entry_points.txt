@@ -1,0 +1,3 @@
+[console_scripts]
+example_node = turtlebot3_navigation.example:main
+
