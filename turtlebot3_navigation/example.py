@@ -7,6 +7,7 @@ from rclpy.qos import ReliabilityPolicy, QoSProfile
 
 class SimplePubSub(Node):
 
+    # init func
     def __init__(self):
         super().__init__('simple_pubsub')
         self.publisher_ = self.create_publisher(Twist, 'cmd_vel', 10)
