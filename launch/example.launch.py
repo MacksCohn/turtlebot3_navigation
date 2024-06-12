@@ -24,5 +24,10 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': True},
                         {'autostart': True},
-                        {'node_names': ['map_server']}])            
+                        {'node_names': ['map_server']}]),
+        Node(
+            package='turtlebot3_navigation',
+            executable='example_node',
+            output='screen',
+            ),        
         ])
