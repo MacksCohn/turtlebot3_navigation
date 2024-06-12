@@ -1,45 +1,54 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 
+from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
+
 """
-Position(0.533665, -0.544118, 0), Orientation(0, 0, 0.816279, 0.577657) = Angle: 1.90988
-
-Position(0.533665, -0.544118, 0), Orientation(0, 0, 0.816279, 0.577657) = Angle: 1.90988
-
-Position(4.27509, 5.92226, 0), Orientation(0, 0, 0.874775, 0.484529) = Angle: 2.12994
-
-Position(2.28073, 8.95063, 0), Orientation(0, 0, -0.951347, 0.308121) = Angle: -2.51516
-
-Position(-3.29666, 5.04603, 0), Orientation(0, 0, -0.492306, 0.870422) = Angle: -1.02947
+0.357015, -0.695551,
+0.533665, -0.544118
+4.27509, 5.92226
+2.28073, 8.95063
+-3.29666, 5.04603
 """
+
 
 class SimplePubSub(Node):
 
-    # init func
+    # init func 
     def __init__(self):
         super().__init__('simple_pubsub')
-        self.publisher_ = self.create_publisher(Twist, 'cmd_vel', 10)
-        timer_period = 0.5
-        self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.subscriber = self.create_subscription(
-            LaserScan,
-            '/scan',
-            self.listener_callback,
-            QoSProfile(depth=10, reliability=ReliabilityPolicy.RELIABLE))  # is the most used to read LaserScan data and some sensor data.
+        self.timer = self.create_timer(1, self.timer_callback_once)
+        self.navigator = BasicNavigator()
+        self.route = [ [0.357015, -0.695551],
+                        [0.533665, -0.544118],
+                        [4.27509, 5.92226],
+                        [2.28073, 8.95063],
+                        [-3.29666, 5.04603]]
+        self.points_sent = 0
 
-    def listener_callback(self, msg):
-        self.get_logger().info('I receive: "%s"' % str(msg))
-
-    def timer_callback(self):
-        msg = Twist()
-        msg.linear.x = 0.5
-        msg.angular.z = 0.5
-        self.publisher_.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % msg)
+    def timer_callback_once(self):
+        self.navigator.waitUntilNav2Active()
+        pose = PoseStamped()
+        pose.header.frame_id = 'map'
+        pose.header.stamp = self.navigator.get_clock().now().to_msg()
+        pose.pose.position.x = self.route[self.points_sent][0]
+        pose.pose.position.y = self.route[self.points_sent][1]
+        pose.pose.orientation.z = 1.0
+        pose.pose.orientation.w = 0.0
+        self.navigator.setInitialPose(pose)
+        for i in range(5):
+            self.get_logger().info('Sending Point: "%s"' % "[" + str(pose.pose.position.x) + ", " + str(pose.pose.position.y) + "]")
+            self.navigator.goToPose(pose)
+            self.points_sent += 1
+            pose.pose.position.x = self.route[self.points_sent][0]
+            pose.pose.position.y = self.route[self.points_sent][1]
+            while not self.navigator.isTaskComplete():
+                pass
+        self.timer.cancel()
             
 def main(args=None):
     rclpy.init(args=args)
