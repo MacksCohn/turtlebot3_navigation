@@ -5,6 +5,18 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 
+"""
+Position(0.533665, -0.544118, 0), Orientation(0, 0, 0.816279, 0.577657) = Angle: 1.90988
+
+Position(0.533665, -0.544118, 0), Orientation(0, 0, 0.816279, 0.577657) = Angle: 1.90988
+
+Position(4.27509, 5.92226, 0), Orientation(0, 0, 0.874775, 0.484529) = Angle: 2.12994
+
+Position(2.28073, 8.95063, 0), Orientation(0, 0, -0.951347, 0.308121) = Angle: -2.51516
+
+Position(-3.29666, 5.04603, 0), Orientation(0, 0, -0.492306, 0.870422) = Angle: -1.02947
+"""
+
 class SimplePubSub(Node):
 
     # init func
