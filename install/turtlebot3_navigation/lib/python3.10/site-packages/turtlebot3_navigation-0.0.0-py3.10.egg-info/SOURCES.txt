@@ -9,6 +9,7 @@ build/turtlebot3_navigation/turtlebot3_navigation.egg-info/entry_points.txt
 build/turtlebot3_navigation/turtlebot3_navigation.egg-info/requires.txt
 build/turtlebot3_navigation/turtlebot3_navigation.egg-info/top_level.txt
 build/turtlebot3_navigation/turtlebot3_navigation.egg-info/zip-safe
+config/controller.yaml
 config/map.pgm
 config/map.yaml
 launch/example.launch.py
