@@ -20,7 +20,7 @@ class SimplePubSub(Node):
 
     # init func 
     def __init__(self):
-        super().__init__('simple_pubsub')
+        super().__init__('nav_point_publisher')
         self.timer = self.create_timer(1, self.timer_callback_once)
         self.navigator = BasicNavigator()
         self.route = [ [0.357015, -0.695551],
@@ -31,6 +31,7 @@ class SimplePubSub(Node):
         self.points_sent = 0
 
     def timer_callback_once(self):
+        self.get_logger().info('Waiting for navigation to be active.')
         self.navigator.waitUntilNav2Active()
         pose = PoseStamped()
         pose.header.frame_id = 'map'
@@ -39,6 +40,7 @@ class SimplePubSub(Node):
         pose.pose.position.y = self.route[self.points_sent][1]
         pose.pose.orientation.z = 1.0
         pose.pose.orientation.w = 0.0
+        self.get_logger().info('Sending Point: "%s"' % "[" + str(pose.pose.position.x) + ", " + str(pose.pose.position.y) + "]")
         self.navigator.setInitialPose(pose)
         for i in range(5):
             self.get_logger().info('Sending Point: "%s"' % "[" + str(pose.pose.position.x) + ", " + str(pose.pose.position.y) + "]")

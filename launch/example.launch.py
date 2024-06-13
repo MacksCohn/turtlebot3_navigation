@@ -26,6 +26,11 @@ def generate_launch_description():
                         {'autostart': True},
                         {'node_names': ['map_server']}]),
         Node(
+            package='nav2_planner'
+            executable='planner_server'
+            output='screen'
+        ),
+        Node(
             package='turtlebot3_navigation',
             executable='example_node',
             output='screen',
