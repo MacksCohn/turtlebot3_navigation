@@ -84,11 +84,6 @@ def generate_launch_description():
             name='waypoint_follower',
             output='screen',
             parameters=[waypoint_follower_yaml]),
-        Node(
-            package='turtlebot3_navigation',
-            executable='example_node',
-            name='our_node'
-        ),
 
         Node(
             package='nav2_lifecycle_manager',
@@ -103,6 +98,7 @@ def generate_launch_description():
                                         'behavior_server',
                                         'bt_navigator',
                                         'waypoint_follower',
-                                        'our_node']}])
+                                        # 'example_node',
+                                        ]}])
 
     ])
