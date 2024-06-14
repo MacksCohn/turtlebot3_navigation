@@ -40,8 +40,6 @@ class SimplePubSub(Node):
         pose.pose.position.y = self.route[self.points_sent][1]
         pose.pose.orientation.z = 1.0
         pose.pose.orientation.w = 0.0
-        self.get_logger().info('Sending Point: "%s"' % "[" + str(pose.pose.position.x) + ", " + str(pose.pose.position.y) + "]")
-        self.navigator.setInitialPose(pose)
         for i in range(5):
             self.get_logger().info('Sending Point: "%s"' % "[" + str(pose.pose.position.x) + ", " + str(pose.pose.position.y) + "]")
             self.navigator.goToPose(pose)
