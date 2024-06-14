@@ -77,6 +77,7 @@ def generate_launch_description():
             name='rviz2_node',
             parameters=[{'use_sim_time': False}],
             arguments=['-d', rviz_config_file_path]),
+            
         Node(
             package='nav2_waypoint_follower',
             executable='waypoint_follower',
