@@ -23,7 +23,7 @@ class SimplePubSub(Node):
         super().__init__('nav_point_publisher')
         self.timer = self.create_timer(1, self.timer_callback_once)
         self.navigator = BasicNavigator()
-        self.route = [ [0.357015, -0.695551],
+        self.route = [
                         [0.533665, -0.544118],
                         [4.27509, 5.92226],
                         [2.28073, 8.95063],
@@ -40,7 +40,7 @@ class SimplePubSub(Node):
         pose.pose.position.y = self.route[self.points_sent][1]
         pose.pose.orientation.z = 1.0
         pose.pose.orientation.w = 0.0
-        for i in range(5):
+        for i in range(len(self.route)):
             self.get_logger().info('Sending Point: "%s"' % "[" + str(pose.pose.position.x) + ", " + str(pose.pose.position.y) + "]")
             self.navigator.goToPose(pose)
             self.points_sent += 1
